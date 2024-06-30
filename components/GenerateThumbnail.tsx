@@ -94,7 +94,7 @@ const GenerateThumbnail = ({
 			<div className="generate_thumbnail">
 				<Button
 					type="button"
-					// variant="plain"
+					variant="plain"
 					onClick={() => setIsAiThumbnail(true)}
 					className={cn("", {
 						"bg-black-6": isAiThumbnail,
@@ -104,7 +104,7 @@ const GenerateThumbnail = ({
 				</Button>
 				<Button
 					type="button"
-					// variant="plain"
+					variant="plain"
 					onClick={() => setIsAiThumbnail(false)}
 					className={cn("", {
 						"bg-black-6": !isAiThumbnail,

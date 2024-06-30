@@ -34,6 +34,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
 
@@ -60,10 +61,10 @@ const CreatePodcast = () => {
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	// const createPodcast = useMutation(api.podcasts.createPodcast);
+	const createPodcast = useMutation(api.podcasts.createPodcast);
 
-	// const { toast } = useToast();
-	// 1. Define your form.
+	const { toast } = useToast();
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -73,39 +74,39 @@ const CreatePodcast = () => {
 	});
 
 	async function onSubmit(data: z.infer<typeof formSchema>) {
-		// try {
-		// 	setIsSubmitting(true);
-		// 	if (!audioUrl || !imageUrl || !voiceType) {
-		// 		toast({
-		// 			title: "Please generate audio and image",
-		// 		});
-		// 		setIsSubmitting(false);
-		// 		throw new Error("Please generate audio and image");
-		// 	}
-		// 	const podcast = await createPodcast({
-		// 		podcastTitle: data.podcastTitle,
-		// 		podcastDescription: data.podcastDescription,
-		// 		audioUrl,
-		// 		imageUrl,
-		// 		voiceType,
-		// 		imagePrompt,
-		// 		voicePrompt,
-		// 		views: 0,
-		// 		audioDuration,
-		// 		audioStorageId: audioStorageId!,
-		// 		imageStorageId: imageStorageId!,
-		// 	});
-		// 	toast({ title: "Podcast created" });
-		// 	setIsSubmitting(false);
-		// 	router.push("/");
-		// } catch (error) {
-		// 	console.log(error);
-		// 	toast({
-		// 		title: "Error",
-		// 		variant: "destructive",
-		// 	});
-		// 	setIsSubmitting(false);
-		// }
+		try {
+			setIsSubmitting(true);
+			if (!audioUrl || !imageUrl || !voiceType) {
+				toast({
+					title: "Please generate audio and image",
+				});
+				setIsSubmitting(false);
+				throw new Error("Please generate audio and image");
+			}
+			const podcast = await createPodcast({
+				podcastTitle: data.podcastTitle,
+				podcastDescription: data.podcastDescription,
+				audioUrl,
+				imageUrl,
+				voiceType,
+				imagePrompt,
+				voicePrompt,
+				views: 0,
+				audioDuration,
+				audioStorageId: audioStorageId!,
+				imageStorageId: imageStorageId!,
+			});
+			toast({ title: "Podcast created" });
+			setIsSubmitting(false);
+			router.push("/");
+		} catch (error) {
+			console.log(error);
+			toast({
+				title: "Error",
+				variant: "destructive",
+			});
+			setIsSubmitting(false);
+		}
 	}
 
 	return (
@@ -209,11 +210,11 @@ const CreatePodcast = () => {
 						/>
 
 						<GenerateThumbnail
-						// setImage={setImageUrl}
-						// setImageStorageId={setImageStorageId}
-						// image={imageUrl}
-						// imagePrompt={imagePrompt}
-						// setImagePrompt={setImagePrompt}
+							setImage={setImageUrl}
+							setImageStorageId={setImageStorageId}
+							image={imageUrl}
+							imagePrompt={imagePrompt}
+							setImagePrompt={setImagePrompt}
 						/>
 
 						<div className="mt-10 w-full">
